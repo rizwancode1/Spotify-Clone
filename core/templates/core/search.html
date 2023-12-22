@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content rounded-xl h-full  overflow-y-scroll bg-[#1f1f1f] w-full">
+    {% include "core/partials/nav.html" %}
+    
+    <div class="p-2">
+        <div class=" flex p-6 border-b">
+            <h1 class="text-7xl">Showing results for <span class="font-bold underline">{{request.GET.q}}</span> </h1>
+        </div>
+    
+        {% include "core/partials/songs_inline_list.html" with songs=object_list %}
+    </div>
+    
+
+</div>
+{% endblock %}
+
+
+

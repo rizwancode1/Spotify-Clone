@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>My Music Player</h1>
+
+    <div class="amplitude-player">
+        <div class="amplitude-song-container">
+            {% for song in songs %}
+                <div class="amplitude-song" data-amplitude-song-index="{{ forloop.counter0 }}">
+                    <div class="song-title">{{ song.title }}</div>
+                    <div class="song-artist">{{ song.artist.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Play/Pause button -->
+        <div >
+            <span class="amplitude-pause" data-amplitude-playlist="{playlist}">
+                
+            </span>
+        </div>
+
+        <div class="amplitude-song-meta">
+            <span class="amplitude-song-name" data-amplitude-song-info="name"></span>
+            <span class="amplitude-song-artist" data-amplitude-song-info="artist"></span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Amplitude.init({
+                songs: [
+                    {% for song in songs %}
+                        {
+                            "name": "{{ song.title }}",
+                            "artist": "{{ song.artist.name }}",
+                            "url": "{{ song.get_audio_url }}",
+                            "cover_art_url": "{{ song.album.get_thumbnail }}",
+                        },
+                    {% endfor %}
+                ],
+            });
+        });
+    </script>
+{% endblock %}

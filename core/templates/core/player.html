@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content m-1 rounded-xl h-full "
+    style="background-image: url('{{ song.album.get_thumbnail }}'); background-size: cover; background-position: center ;">
+    <div class="bg-opacity-80 backdrop-blur h-full rounded-xl w-full">
+        {% include "core/partials/nav.html" %}
+        <div class="p-2 flex flex-col">
+            <div class="">
+                <div class="player ml-4 flex w-full justify-between">
+                    <img src="{{ song.album.image.url }}" alt="{{ song.album.title }}" class="w-2/4 rounded-md">
+
+                    <div class="w-2/4">
+                        <div class="rounded-2xl p-6 ">
+                            <h3 class="text-3xl">Title : {{song.title}}</h3>
+                            <h3 class="text-xl">Singer : {{song.artist.name}}</h3>
+                            <h3 class="text-xl">Album : {{song.album.title}}</h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress flex justify-between items-start px-4 mt-6">
+                    <div id="currentTime" class="text-gray-300">0:00</div>
+                    <input id="progressBar" type="range" min="0" max="100" step="0.01"
+                        class="w-3/4 mt-1 bg-gray-600 rounded-full appearance " oninput="seekTo(event)" />
+                    <div id="totalDuration" class="text-gray-300">{{ song.get_duration }}</div>
+                </div>
+                <div class="flex flex-col">
+                    <audio id="audioPlayer" class="hidden" ontimeupdate="updateTime()" onended="resetPlayer()">
+                        <source src="{{ song.audio.url }}" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <div class="buttons flex items-center justify-center space-x-4 py-2 ">
+                    <div class="previous">
+                        <button id="nextbtn"
+                            class="border border-white  hover:bg-white hover:text-black hover:border- text-white p-2 rounded-full focus:outline-none">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6 -rotate-180">
+                                    <path
+                                        d="M5.055 7.06c-1.25-.714-2.805.189-2.805 1.628v8.123c0 1.44 1.555 2.342 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.342 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256L14.805 7.06C13.555 6.346 12 7.25 12 8.688v2.34L5.055 7.06z" />
+                                </svg>
+
+                            </i>
+                        </button>
+                    </div>
+                    <div class="play pause">
+                        <button id="playBtn"
+                            class="border border-white  hover:bg-white hover:text-black hover:border- text-white p-4 rounded-full focus:outline-none">
+                            <i class="fas fa-play">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6">
+                                    <path fill-rule="evenodd"
+                                        d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+
+                            </i>
+                        </button>
+                        <button id="pauseBtn"
+                            class="border border-white  hover:bg-white hover:text-black text-white p-4 rounded-full focus:outline-none hidden">
+                            <i class="fas fa-pause">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6">
+                                    <path fill-rule="evenodd"
+                                        d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+
+                            </i>
+                        </button>
+                    </div>
+
+                    <div class="next">
+                        <button id="nextbtn"
+                            class="border border-white  hover:bg-white hover:text-black hover:border- text-white p-2 rounded-full focus:outline-none">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="w-6 h-6 ">
+                                    <path
+                                        d="M5.055 7.06c-1.25-.714-2.805.189-2.805 1.628v8.123c0 1.44 1.555 2.342 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.342 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256L14.805 7.06C13.555 6.346 12 7.25 12 8.688v2.34L5.055 7.06z" />
+                                </svg>
+
+                            </i>
+                        </button>
+                    </div>
+                    <div class="mx-60">
+                        <a href="#" class="font-medium hover:underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="currentColor"
+                                class="w-10 h-10 hover:scale-110 hover:animate-pulse  ">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                            </svg>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <script>
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playBtn = document.getElementById('playBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const currentTime = document.getElementById('currentTime');
+            const progressBar = document.getElementById('progressBar');
+            const totalDuration = document.getElementById('totalDuration');
+
+            playBtn.addEventListener('click', () => {
+                audioPlayer.play();
+                playBtn.classList.add('hidden');
+                pauseBtn.classList.remove('hidden');
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                audioPlayer.pause();
+                playBtn.classList.remove('hidden');
+                pauseBtn.classList.add('hidden');
+            });
+
+            function updateTime() {
+                const duration = audioPlayer.duration;
+                const currentTimeValue = audioPlayer.currentTime;
+
+                const minutes = Math.floor(currentTimeValue / 60);
+                const seconds = Math.floor(currentTimeValue % 60);
+                const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                currentTime.innerText = formattedTime;
+
+                const percentage = (currentTimeValue / duration) * 100;
+                progressBar.value = percentage;
+
+                totalDuration.innerText = song.get_duration;
+            }
+
+            function seekTo(event) {
+                const percentage = event.target.value;
+                const duration = audioPlayer.duration;
+                const newTime = (percentage / 100) * duration;
+
+                audioPlayer.currentTime = newTime;
+                
+            }
+
+            function resetPlayer() {
+                playBtn.classList.remove('hidden');
+                pauseBtn.classList.add('hidden');
+                currentTime.innerText = '0:00';
+                progressBar.value = 0;
+            }
+
+
+
+        </script>
+{% endblock %}

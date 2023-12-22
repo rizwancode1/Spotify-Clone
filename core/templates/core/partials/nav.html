@@ -1,0 +1,72 @@
+<div class="nav">
+    <header class="flex justify-between bg-transparent rounded-t-xl h-16 items-center px-4">
+        <div class=" next&previous flex space-x-2 px-2 justify-center items-center">
+            <div class="flex space-x-4">
+                <a id="back" href=""  class="bg-black rounded-full p-1 hover:bg-gray-50 hover:text-black h-8 w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:font-semibold">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                      </svg>
+                      
+                </a>
+    
+                <a id="next" href="" class="bg-black rounded-full p-1 hover:bg-gray-50 hover:text-black h-8 w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:font-semibold">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                      </svg>
+                </a>
+
+            </div>
+            <div id="search-el" class="search hidden px-2 py-2 rounded-full bg-[#242424] border hover:border-2 box-border ">
+                <i class="text-white ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </i>
+                <form action="{% url 'core:search' %}" method="get">
+                    <input id="" type="text" name="q" placeholder="What you want to listen?" class=" bg-[#242424] px-2 focus-visible:outline-none focus-visible:border-none">
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="Account_links flex items-center ">
+            {% if user.is_authenticated %}
+            {% comment %} <a href="{% url "account_logout" %}" class="py-2 px-6 font-semibold text-gray-200 hover:text-white hover:underline">Logout</a> {% endcomment %}
+            <div class="flex items-center relative">
+                <i id="accountIcon" class="account h-7 w-7 p-1 bg-[#1f1f1f] flex justify-center items-center rounded-full cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+                    </svg>
+                </i>
+                <div id="menu" class="menu hidden hover:block w-44 bg-[#191919] absolute top-9 right-1 rounded">
+                    <ul class="py-1 px-2 ">
+                        <li class="hover:bg-[#1f1f1f] p-1 rounded"><a href="{% url "core:profile" user.id %}">Profile</a></li>
+                            <hr>
+                        <li class="hover:bg-[#1f1f1f] p-1 rounded"><a href="{% url "account_logout" %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            {% else %}
+            <a href="{% url "account_signup" %}" class="py-2 px-6 font-semibold text-gray-200 hover:text-white hover:underline">Signup</a>
+            <a href="{% url "account_login" %}" class="py-2 px-6 bg-white text-black rounded-3xl hover:scale-95">Login</a>
+            {% endif %}
+        </div>
+    </header>
+</div>
+<script>
+    
+    document.getElementById('accountIcon').addEventListener('click', function () {
+        // Toggle the 'hidden' class on the menu
+        document.getElementById('menu').classList.toggle('hidden');
+    });
+
+    document.getElementById('searchIcon').addEventListener('click', function () {
+        // Toggle the 'hidden' class on the menu
+        document.getElementById('search-el').classList.remove('hidden');
+        document.getElementById('search-el').classList.add('flex');
+    });
+
+
+</script>

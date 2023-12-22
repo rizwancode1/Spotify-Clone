@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content rounded-xl h-full  overflow-y-scroll bg-gradient-to-t from-purple-600 to-blue-500 w-full">
+    {% include "core/partials/nav.html" %}
+    
+    
+    <div class="">
+
+        <div class=" flex p-4">
+            <img src="{{playlist.get_thumbnail}}" alt="" class="h-36">
+            <div class="px-4 mt-5">
+                <p>Playlist </p>
+                <h1 class="text-3xl font-bold mb-8">{{playlist.name}}</h1>
+    
+                <p>{{playlist.description}}</p>
+    
+            </div>
+        </div>
+    
+        {% include "core/partials/songs_inline_list.html" %}
+    </div>
+    
+
+
+</div>
+
+{% endblock content %}

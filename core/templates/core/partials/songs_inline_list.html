@@ -1,0 +1,93 @@
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-200 uppercase bg-transparent">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    #
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Title
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Album
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date Added
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {% for song in songs %}
+            
+            <tr class="odd:bg-gray-900/20 even:dark:bg-transparent text-white group">
+                <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-white flex items-center" >
+                    <a 
+                        href=""
+                        hx-get="{{song.get_hx_play_url}}"
+                        hx-target = "#music-player"
+                        hx-swap = "outerHtml"    
+                    >
+                        {{forloop.counter}}
+                    </a>
+                </th>
+                <td class="px-6 py-4 ">
+                    <a
+                        href=""
+                        hx-get="{{song.get_hx_play_url}}"
+                        hx-target = "#music-player"
+                        hx-swap = "outerHtml"
+                        
+                    
+                    >
+                        <div class="flex space-x-2 items-center">
+                            <img src="{{song.album.image.url}}" alt="album" srcset="" class="rounded-md  h-12">
+                            <div class="flex flex-col">
+                                <p class="font-bold hover:underline">{{song.title|slice:":25"}} ...</p>
+                                <p class="text-sm font-bold hover:underline">{{song.artist.name}}</p>
+                            </div>
+      
+                                
+                        </div>
+                    </a>
+                    
+                </td>
+                <td class="px-6 py-4">
+                    {{song.album.title}}
+                </td>
+                <td class="px-6 py-4">
+                    {{song.added_at|timesince}} Ago
+                </td>
+                <td class="px-6 py-4">
+                    {{song.get_duration}}
+            
+                </td>
+                <td class="px-6 py-4">
+                    <a href="#" class="font-medium {% if song in favs_songs %}text-rose-500 {% else %}text-white {% endif %}"
+                        hx-get ="{% url 'core:manage-favorites' song.id %}"
+                        hx-target="#favorate-el ,fav-btn "
+                        hx-swap = "outerHtml"
+                        >
+                            <div class="" id="fav-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 hover:scale-110 hover:animate-pulse animate-bounce ">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                              </svg>
+                            </div>                       
+                        </a>
+            
+                </td>
+            </tr>
+            {% endfor %}
+            
+            
+        </tbody>
+    </table>
+</div>

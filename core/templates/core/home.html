@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content m-1 rounded-xl h-full">
+    {% include "core/partials/nav.html" %}
+    <div class=" bg-[#1f1f1f] h-full ">
+        <h2 class="text-2xl ml-4 hover:underline">Weekend Mix</h2>
+        <div class="Playlists p-2 grid grid-cols-4 max-h-max">
+            {% for playlist in playlists %}
+                <div class="Playlist bg-[#2b2b2b] m-1 rounded-xl p-2 space-y-2 h-fit relative group">
+                    <img src="{{playlist.get_thumbnail}}" alt="" class="rounded-xl h-2/4">
+                    
+                    <div id="play-btn" class="bg-green-500 h-10 w-10 absolute top-[42%] right-[7%] rounded-full flex justify-center items-center  opacity-0 group-hover:opacity-100  transition delay-150 duration-300 ease-in-out hover:scale-110 ">
+                        <a href="{% url 'core:list-view' playlist.id %}" class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="bg-black" viewBox="0 0 24 24" stroke-width="none" stroke="none" class="w-7 h-7">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex flex-col px-2">
+                        <h3 class="font-bold text-base">{{playlist.name}}</h3>
+                        <p class=" text-xs text-gray-300/90">
+                            {{ playlist.description|slice:":30" }} ...
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
